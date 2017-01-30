@@ -1,6 +1,19 @@
 #include <iostream>
 using namespace std;
 
+// Create class for sudoku-checker
+/*
+class SudokuChecker {
+	bool columnChecker(vector<vector<int>>& S, const int& columnNum);
+	// similarly rowChecker
+	// and then blockChecker
+	bool blockChecker(vector<vector<int>>& S, const int& i, const int& j);
+	// (i,j) is the bottom-left coordinate of the block
+	
+	// Fill these methods, then create s SudokuChecker class-object in main and call its methods appropriately
+}
+*/
+
 int main()
 {
 	int arr[9][9];
