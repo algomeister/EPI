@@ -62,7 +62,10 @@ class LinkedList
         if(b==NULL || b->next==NULL)
             return 0;
         else if(b==head || b->next==head)
+            {
+            curr = head;
             return -1;
+        }
         else
             {
             a = a->next;
@@ -81,6 +84,7 @@ class LinkedList
                 b = b->next;
                 j++;
             }
+            curr = a;
             return j;
         }
     }
@@ -104,17 +108,7 @@ int main()
     
     if(L.loopCheck() == 0)
         cout << "0" << endl;
-    else if(L.loopCheck() == -1)
-        {
-        L.rewind();
-        cout << L.getValue() << endl;
-    }
     else
-        {
-        L.rewind();
-        while(L.loopCheck())
-            L.next();
-        cout << L.getValue() << endl;
-    }
+        cout << L.getValue();
     return 0;
 }
