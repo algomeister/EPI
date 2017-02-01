@@ -10,15 +10,12 @@ class LinkedList
         node *next;
     };
     public:
-    node *head;
-    node *curr;
-
     LinkedList()
         {
         head = NULL;
         curr = NULL;
     }
-
+    
     void addValue(T a)
         {
         node *n = new node;
@@ -87,6 +84,10 @@ class LinkedList
             return j;
         }
     }
+    
+    private:
+    node *head;
+    node *curr;
 };
 
 
@@ -100,7 +101,7 @@ int main()
     L.addValue(7);
     L.addValue(5);
     L.addValue(2);
-
+    
     if(L.loopCheck() == 0)
         cout << "0" << endl;
     else if(L.loopCheck() == -1)
