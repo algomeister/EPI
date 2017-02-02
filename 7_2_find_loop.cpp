@@ -98,6 +98,11 @@ class LinkedList
 
 int main()
     {
+    // Take input from a running vector and from stdin (keyboard user input)
+    // int N; cin >> N; // first get the size of the input from keyboard
+    // vector<int> A; A.resize(N);
+    // for(i= 1 to N); cin >> A[i]; // get the elements from input
+    // for(i=1 to N); L.addValue(A[i]); // add these values to the linked list
     LinkedList<int> L;
     L.addValue(12);
     L.addValue(10);
@@ -106,6 +111,11 @@ int main()
     L.addValue(5);
     L.addValue(2);
     
+    // loopCheck method should by default return the head of the loop
+    // that is how the function should be designed
+    // node* loop = L.loopCheck();
+    // if (loop == nullptr) cout << "No loop" << endl;
+    // else cout << "Loop exists at: " << loop->data << endl;
     if(L.loopCheck() == 0)
         cout << "0" << endl;
     else
