@@ -9,13 +9,27 @@ class LinkedList
         T x;
         node *next;
     };
-    public:
+    public:    
     LinkedList()
         {
         head = NULL;
         curr = NULL;
     }
-    
+    node* getHead()
+        {
+        return head;
+    }
+    node* getCurrent()
+        {
+        return curr;
+    }
+    void addNode(struct node* b)
+        {
+        b->next = head;
+        head = b;
+        if(curr == NULL)
+            curr = head;
+    }
     void addValue(T a)
         {
         node *n = new node;
@@ -47,10 +61,11 @@ class LinkedList
     int loopCheck()
         {
         node *a, *b;
-        int i=0,j=0;
-        a = head;
-        b = head;
-        while(b!=NULL || b->next!=NULL || b!=head || b->next!=head || a!=b)
+        int i=1,j=0;
+        a = head->next;
+        b = head->next;
+        b = b->next;
+        while(b!=NULL && b->next!=NULL && b!=head && b->next!=head && a!=b)
             {
             a = a->next;
             b = b->next;
@@ -77,7 +92,10 @@ class LinkedList
             a = head;
             b = head;
             while(i>0)
+                {
                 b = b->next;
+                i--;
+            }
             while(a!=b)
                 {
                 a = a->next;
@@ -98,17 +116,24 @@ class LinkedList
 
 int main()
     {
-    LinkedList<int> L;
+    LinkedList<int> L, M;
     L.addValue(12);
     L.addValue(10);
     L.addValue(9);
+    L.addNode(L.getCurrent());
     L.addValue(7);
     L.addValue(5);
     L.addValue(2);
+    M.addValue(6);
+    M.addValue(5);
+    M.addValue(3);
+    M.addValue(1);
     
+    
+    L.rewind();
     if(L.loopCheck() == 0)
         cout << "0" << endl;
     else
-        cout << L.getValue();
+        cout << "Pointer: " << L.getCurrent() << "\nValue: " << L.getValue() << endl;
     return 0;
 }
