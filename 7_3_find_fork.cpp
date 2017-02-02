@@ -12,7 +12,7 @@ class LinkedList
     public:
     node *head;
     node *curr;
-
+    
     LinkedList()
         {
         head = NULL;
@@ -100,7 +100,7 @@ class LinkedList
             }
             return 1;
         }
-        else
+        else 
             return 0;
     }
 };
@@ -122,9 +122,9 @@ int main()
     M.addValue(5);
     M.addValue(3);
     M.addValue(1);
-
+    
     if(L.forkCheck(M.head))
-        cout << L.getValue() << endl;
+        cout << L.curr << endl;
     else
         cout << "0" << endl;
     return 0;
