@@ -152,7 +152,6 @@ int main()
     M.addValue(3);
     M.addValue(1);
 
-    L.rewind();
     if(L.forkAndLoopCheck(M.getHead()))
         cout << "Value: " << L.getValue() << "\nPointer: " << L.getCurrent() << endl;
     else
