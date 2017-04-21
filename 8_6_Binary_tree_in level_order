@@ -1,0 +1,93 @@
+#include <iostream>
+#include <queue>
+
+using namespace std;
+
+template <class T>
+class BinarySearchTree
+{
+    struct node
+    {
+        T key;
+        node *left;
+        node *right;
+    };
+    public:
+    BinarySearchTree()
+    {
+        curr = NULL;
+        top = NULL;
+    }
+    void addValue(T a)
+    {
+        curr = top;
+        node *n = new node;
+        n->key = a;
+        if(curr)
+            {
+            while(curr)
+                {
+                if(a<=curr->key)
+                    {
+                    if(curr->left)
+                        curr = curr->left;
+                    else
+                        {
+                        curr->left = n;
+                        break;
+                    }
+                }
+                else
+                    {
+                    if(curr->right)
+                        curr = curr->right;
+                    else
+                        {
+                        curr->right = n;
+                        break;
+                    }
+                }
+            }
+        }
+        else
+            top = n;
+    }
+    
+    void addMultipleValues(vector<T>& v){
+        for(int i=0; i<v.size(); i++){
+            addValue(v[i]);
+        }
+    }
+    
+    void printInLevelOrder(){
+        queue<node*> q;
+        curr = top;
+        q.push(curr);
+        while(!q.empty()){
+            curr = q.front();
+            q.pop();
+            cout << curr->key << " ";
+            if(curr->left)
+                q.push(curr->left);
+            if(curr->right)
+                q.push(curr->right);
+        }
+    }
+    
+    bool isEmpty()
+    {
+        return ( top != NULL ? false : true );
+    }
+
+    private:
+    node *top;
+    node *curr;
+};
+
+int main(){
+    BinarySearchTree<int> B;
+    vector<int> v = {314,6,6,271,561,2,271,28,0,3,1,28,17,401,257,641};
+    B.addMultipleValues(v);
+    B.printInLevelOrder();
+    return 0;
+}
