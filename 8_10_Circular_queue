@@ -1,0 +1,56 @@
+#include <iostream>
+#include <vector>
+#include <stdexcept>
+
+using namespace std;
+
+template <class T>
+class queueAPI
+{
+    private:
+    size_t head, tail, count;
+    vector<T> data;
+    
+    public:
+    queueAPI(const size_t &cap = 8)
+    {
+        head = 0;
+        tail = 0;
+        count = 0;
+        data = {cap};
+    }
+    
+    void enqueue(T a){
+        if(count == data.size()){
+            data.resize(data.size() << 1);
+        }
+        data[tail] = a;
+        tail++;
+        count++;
+    }
+    
+    T dequeue(){
+        if(count){
+            count--;
+            T x = data[head];
+            head++;
+            return x;
+        }
+        throw length_error("empty queue");
+    }
+    
+    size_t size(){
+        return count;
+    }
+};
+
+int main(){
+    vector<int> v = {1 ,2 ,3, 4, 5, 6, 7};
+    queueAPI<int> q;
+    for(int i=0; i<v.size(); i++){
+        q.enqueue(v[i]);
+    }
+    cout << q.dequeue() << endl;
+    cout << q.size() << endl;
+    return 0;
+}
