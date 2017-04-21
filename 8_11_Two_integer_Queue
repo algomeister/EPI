@@ -1,0 +1,57 @@
+#include <iostream>
+#include <vector>
+#include <stdexcept>
+
+using namespace std;
+
+class queue
+{
+    private:
+    int num, zeroes;
+    
+    public:
+    queue()
+    {
+        num = -1;
+        zeroes = 0;
+    }
+    
+    void enqueue(int a){
+        if(num == -1)
+            num = a;
+        else{
+            num = num*10 + a;
+        }
+        if(num == 0 && a == 0)
+            zeroes++;
+    }
+    
+    int dequeue(){
+        if(num == 0 && zeroes > 0){
+            zeroes--;
+            return 0;
+        }
+        else if(num > 0){
+            int ret = num%10;
+            num /= 10;
+            return ret;
+        }
+        throw length_error("empty queue");
+    }
+};
+
+int main(){
+    vector<int> v = {0, 0, 0, 0, 0, 0};
+    queue q;
+    for(int i=0; i<v.size(); i++){
+        q.enqueue(v[i]);
+    }
+    cout << q.dequeue() << endl;
+    cout << q.dequeue() << endl;
+    cout << q.dequeue() << endl;
+    cout << q.dequeue() << endl;
+    cout << q.dequeue() << endl;
+    cout << q.dequeue() << endl;
+    cout << q.dequeue() << endl;
+    return 0;
+}
