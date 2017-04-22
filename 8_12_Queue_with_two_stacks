@@ -1,0 +1,94 @@
+#include <iostream>
+#include <vector>
+#include <stdexcept>
+
+using namespace std;
+
+template <typename T>
+class stack{
+    public:
+    int top;
+    vector<T> v;
+    
+    public:
+    stack(){
+        top = -1;
+    }
+    
+    void push(T a){
+        v.push_back(a);
+        top++;
+    }
+    
+    T pop(){
+        if(top >= 0)
+            return v[top--];
+        throw length_error("empty stack");
+    }
+    
+    T peek(){
+        if(top >=0)
+            return v[top];
+        throw length_error("empty stack");
+    }
+    
+    bool empty(){
+        if(top >= 0)
+            return false;
+        return true;
+    }
+};    
+
+template <typename T>
+class queue
+{
+    private:
+    stack<T> a, b;
+    T temp;
+    
+    public:
+    queue() {
+        a = stack<T>();
+        b = stack<T>();
+    }
+        
+    void enqueue(T x){
+        a.push(x);
+    }
+    
+    T dequeue(){
+        if(!b.empty()){
+            return b.pop();
+        }
+        else if(!a.empty()){
+            while(!a.empty()){
+                b.push(a.pop());
+            }
+            return b.pop();
+        }
+        throw length_error("empty queue");
+    }
+};
+
+int main(){
+    vector<int> v = {1, 0, 0, 0, 0, 0, 7 ,6, 0 , 0, 0 , 0 , 2, 1};
+    queue<int> q;
+    for(int i=0; i<v.size(); i++){
+        q.enqueue(v[i]);
+    }
+    cout << q.dequeue() << endl;
+    cout << q.dequeue() << endl;
+    cout << q.dequeue() << endl;
+    cout << q.dequeue() << endl;
+    cout << q.dequeue() << endl;
+    cout << q.dequeue() << endl;
+    cout << q.dequeue() << endl;
+    cout << q.dequeue() << endl;
+    cout << q.dequeue() << endl;
+    cout << q.dequeue() << endl;
+    cout << q.dequeue() << endl;
+    cout << q.dequeue() << endl;
+    cout << q.dequeue() << endl;
+    cout << q.dequeue() << endl;
+    return 0;
+}
