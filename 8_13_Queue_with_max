@@ -1,0 +1,120 @@
+#include <iostream>
+#include <vector>
+#include <stdexcept>
+
+using namespace std;
+
+template <typename T>
+class MaxStack {
+private:
+	vector<T> v, max;
+	int index;
+
+public:
+	MaxStack() {
+		index = -1;
+}
+
+	void push(T a) {
+		v.push_back(a);
+		if (index < 0 || a > max[index])
+			max.push_back(a);
+		else
+			max.push_back(max[index]);
+		index++;
+	}
+
+	T pop() {
+		if (index >= 0) {
+			T ret = v[index--];
+			v.pop_back();
+			max.pop_back();
+			return ret;
+		}
+		throw length_error("empty stack");
+	}
+
+	T peek() {
+		if (index >= 0)
+			return v[index];
+		throw length_error("empty stack");
+	}
+
+	T maxVal() {
+		if (index >= 0)
+			return max[index];
+		throw length_error("empty stack");
+	}
+
+	bool empty() {
+		if (index < 0)
+			return true;
+		return false;
+	}
+};
+
+template <typename T>
+class MaxQueue
+{
+private:
+	MaxStack<T> a, b;
+
+public:
+	MaxQueue() {
+		a = MaxStack<T>();
+		b = MaxStack<T>();
+	}
+
+	void enqueue(T x) {
+		a.push(x);
+	}
+
+	T dequeue() {
+		if (!b.empty()) {
+			return b.pop();
+		}
+		else if (!a.empty()) {
+			while (!a.empty()) {
+				b.push(a.pop());
+			}
+			return b.pop();
+		}
+		throw length_error("empty queue");
+	}
+
+	T max() {
+		if (!a.empty() && !b.empty()) {
+			if (a.maxVal() > b.maxVal())
+				return a.maxVal();
+			else
+				return b.maxVal();
+		}
+		else if (!a.empty())
+			return a.maxVal();
+		else if (!b.empty())
+			return b.maxVal();
+		throw length_error("empty stack");	
+	}
+};
+
+int main() {
+	vector<int> v = { 5, 1, 6, 3, 4 };
+	MaxQueue<int> q;
+	for (int i = 0; i<v.size(); i++) {
+		q.enqueue(v[i]);
+	}
+	cout << "max= " << q.max() << endl;
+	cout << q.dequeue() << endl;
+    q.enqueue(8);
+	cout << "max= " << q.max() << endl;
+	cout << q.dequeue() << endl;
+	cout << "max= " << q.max() << endl;
+    q.enqueue(7);
+    
+	cout << q.dequeue() << endl;
+	cout << "max= " << q.max() << endl;
+	cout << q.dequeue() << endl;
+	cout << "max= " << q.max() << endl;
+
+	return 0;
+}
