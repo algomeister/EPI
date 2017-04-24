@@ -1,0 +1,149 @@
+#include <iostream>
+#include <vector>
+#include <stdexcept>
+
+using namespace std;
+
+template <typename T>
+class MaxStack {
+private:
+	vector<pair<int,T>> v;
+    vector<T> max;
+int index;
+
+public:
+	MaxStack() {
+		index = -1;
+	}
+
+	void push(pair<int,T> a) {
+		v.push_back(a);
+		if (index < 0 || max[index] < a.second)
+			max.push_back(a.second);
+		else
+			max.push_back(max[index]);
+		index++;
+	}
+
+	pair<int,T> pop() {
+		if (index >= 0) {
+			pair<int,T> ret = v[index--];
+			v.pop_back();
+			max.pop_back();
+			return ret;
+		}
+		throw length_error("empty stack");
+	}
+
+	pair<int,T> peek() {
+		if (index >= 0)
+			return v[index];
+		throw length_error("empty stack");
+	}
+
+	T maxVal() {
+		if (index >= 0)
+			return max[index];
+		throw length_error("empty stack");
+	}
+
+	bool empty() {
+		if (index < 0)
+			return true;
+		return false;
+	}
+};
+
+template <typename T>
+class MaxQueue
+{
+private:
+	MaxStack<T> a, b;
+
+public:
+	MaxQueue() {
+		a = MaxStack<T>();
+		b = MaxStack<T>();
+	}
+
+	void enqueue(pair<int,T> x) {
+		a.push(x);
+	}
+
+	pair<int,T> dequeue() {
+		if (!b.empty()) {
+			return b.pop();
+		}
+		else if (!a.empty()) {
+			while (!a.empty()) {
+				b.push(a.pop());
+			}
+			return b.pop();
+		}
+		throw length_error("empty queue");
+	}
+
+	pair<int,T> front() {
+		if (!b.empty()) {
+			return b.peek();
+		}
+		else if (!a.empty()) {
+			while (!a.empty()) {
+				b.push(a.pop());
+			}
+			return b.peek();
+		}
+		throw length_error("empty queue");
+	}
+
+	T max() {
+		if (!a.empty() && !b.empty()) {
+			if (a.maxVal() > b.maxVal())
+				return a.maxVal();
+			else
+				return b.maxVal();
+		}
+		else if (!a.empty())
+			return a.maxVal();
+		else if (!b.empty())
+			return b.maxVal();
+		throw length_error("empty queue");
+	}
+
+	bool empty() {
+		if (!a.empty() || !b.empty())
+			return false;
+		return true;
+	}
+};
+
+template <typename T>
+class TrafficElement {
+private:
+	MaxQueue<T> q;
+
+public:
+	TrafficElement() {
+		q = MaxQueue<T>();
+	}
+
+	void slidingMax(vector<std::pair<int, T>>& v, int w) {
+		for (int i = 0; i < v.size(); i++){
+			q.enqueue(v[i]);
+            cout << "v[" << i << "].first= " << v[i].first << " q.front().first= " << q.front().first << "  w= " << w << endl; 
+			if (v[i].first - q.front().first > w)
+				q.dequeue();
+			if (!q.empty())
+				cout << "Max at timestamp " << v[i].first << " is = " << q.max() << endl;
+		}
+	}
+};
+
+int main() {
+	vector<pair<int, int>> v = {{0,18},{1,21},{2,23},{3,22},{4,8},{5,18},{6,19},{7,16},{8,18},{9,26},{10,16},{11,23},
+								{12,24},{13,25},{14,19}};
+	int w = 3;
+	TrafficElement<int> x;
+	x.slidingMax(v, w);
+	return 0;
+}
