@@ -1,0 +1,114 @@
+#include <iostream>
+#include <vector>
+#include <cmath>
+
+using namespace std;
+
+#include <iostream>
+#include <vector>
+#include <cmath>
+
+using namespace std;
+
+template <typename T>
+class node {
+public:
+	T data;
+	node *left, *right;
+	
+	node() {
+		left = right = NULL;
+	}
+};
+
+template <typename T>
+class Info {
+public:
+	node<T>* n;
+	int count;
+
+	Info() {
+		n = NULL;
+		count = 0;
+	}
+};
+
+template <typename T>
+Info<T>* getInfo(node<T>* p, int k) {
+	Info<T> *ret = new Info<T>();
+	if (p == NULL) {
+		return ret;
+	}
+	Info<T>* left = getInfo<T>(p->left, k);
+	if (left->n) {
+		return left;
+	}
+	Info<T>* right = getInfo<T>(p->right, k);
+	if (right->n) {
+		return right;
+	}
+	ret->count = left->count + right->count + 1;
+	if (abs(left->count - right->count) > k) {
+		ret->n = p;
+		return ret;
+	}
+	return ret;
+}
+
+template <typename T>
+class BinaryTree {
+public:
+	node<T> *root;
+
+	BinaryTree() {
+		root = NULL;
+	}
+
+	void _insert(T a, node<T> *n) {
+		if (root) {
+			if (a < n->data) {
+				if (n->left)
+					_insert(a, n->left);
+				else {
+					node<T> *leaf = new node<T>();
+					leaf->data = a;
+					n->left = leaf;
+				}
+			}
+			else {
+				if (n->right)
+					_insert(a, n->right);
+				else {
+					node<T> *leaf = new node<T>();
+					leaf->data = a;
+					n->right = leaf;
+				}
+			}
+		}
+		else {
+			node<T> *leaf = new node<T>();
+			leaf->data = a;
+			root = leaf;
+		}
+
+	}
+
+	void insert(T a) {
+		_insert(a, root);
+	}
+};
+
+int main() {
+	vector<int> v = { 10, 5, 15, 3, 12, 1, 4, 2, 18 };
+	BinaryTree<int> B;
+	for (int i = 0; i < v.size(); i++) {
+		B.insert(v[i]);
+	}
+    node<int>* ret = getInfo<int>(B.root, 3)->n;
+    if(ret)
+        cout << ret->data << endl;
+    else
+        cout << "No unbalanaced nodes" << endl;
+    
+	return 0;
+}
