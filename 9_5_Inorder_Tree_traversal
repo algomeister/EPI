@@ -1,0 +1,109 @@
+#include <iostream>
+#include <vector>
+#include <cmath>
+
+using namespace std;
+
+#include <iostream>
+#include <vector>
+#include <cmath>
+
+using namespace std;
+
+template <typename T>
+class node {
+public:
+	T data;
+	node *left, *right, *parent;
+	
+	node() {
+		left = right = parent = NULL;
+	}
+};
+
+template <typename T>
+class BinaryTree {
+public:
+	node<T> *root;
+
+	BinaryTree() {
+		root = NULL;
+	}
+
+	void _insert(T a, node<T> *n) {
+		if (root) {
+			if (a < n->data) {
+				if (n->left)
+					_insert(a, n->left);
+				else {
+					node<T> *leaf = new node<T>();
+					leaf->data = a;
+                    leaf->parent = n;
+					n->left = leaf;
+				}
+			}
+			else {
+				if (n->right)
+					_insert(a, n->right);
+				else {
+					node<T> *leaf = new node<T>();
+					leaf->data = a;
+                    leaf->parent = n;
+					n->right = leaf;
+				}
+			}
+		}
+		else {
+			node<T> *leaf = new node<T>();
+			leaf->data = a;
+			root = leaf;
+		}
+
+	}
+
+	void insert(T a) {
+		_insert(a, root);
+	}
+};
+
+template <typename T>
+void printInOrder(node<T>* n) {
+    node<T> *curr = n;
+    int goRight = 0;
+    while (curr) {
+        if (curr->left && goRight == 0) {
+            curr = curr->left;    
+        }
+        else {
+            goRight = 0;
+            cout << curr->data << endl;
+            if (curr->right) {
+                curr = curr->right;
+            }
+            else {
+                if ((curr->parent->left) && (curr->parent->left == curr)) {
+                    curr = curr->parent;
+                    goRight = 1;
+                }
+                else {
+                    node<T>* grandParent  = curr->parent->parent;
+                    if ((grandParent->right) && (grandParent->right->right) && (grandParent->right->right == curr))
+                        break;
+                    curr = grandParent;
+                    goRight = 1;
+                }
+            }
+        }
+    }
+}
+
+int main() {
+	vector<int> v = { 10, 5, 15, 3, 12, 1, 4, 2, 18 };
+	BinaryTree<int> B;
+	for (int i = 0; i < v.size(); i++) {
+		B.insert(v[i]);
+	}
+    printInOrder<int>(B.root);
+    
+	return 0;
+}
