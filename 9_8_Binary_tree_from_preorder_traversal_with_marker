@@ -1,0 +1,120 @@
+#include <iostream>
+#include <vector>
+#include <cmath>
+
+using namespace std;
+
+#include <iostream>
+#include <vector>
+#include <cmath>
+
+using namespace std;
+
+template <typename T>
+class node {
+public:
+	T data;
+	node *left, *right;
+	
+	node() {
+		left = right = NULL;
+	}
+};
+
+template <typename T>
+class BinaryTree {
+public:
+	node<T> *root;
+    int curr;
+
+	BinaryTree() {
+		root = NULL;
+        curr = 0;
+	}
+
+	void _insert(T a, node<T> *n) {
+		if (root) {
+			if (a < n->data) {
+				if (n->left)
+					_insert(a, n->left);
+				else {
+					node<T> *leaf = new node<T>();
+					leaf->data = a;
+                    leaf->parent = n;
+					n->left = leaf;
+				}
+			}
+			else {
+				if (n->right)
+					_insert(a, n->right);
+				else {
+					node<T> *leaf = new node<T>();
+					leaf->data = a;
+                    leaf->parent = n;
+					n->right = leaf;
+				}
+			}
+		}
+		else {
+			node<T> *leaf = new node<T>();
+			leaf->data = a;
+			root = leaf;
+		}
+
+	}
+
+	void insert(T a) {
+		_insert(a, root);
+	}
+    
+    void makeTree(node<T> *n, vector<T> pre, int current, int right = 0) {
+        if (curr < pre.size()) {
+            if (pre[curr] && right == 0) {
+                node<T>* leftNode = new node<T>();
+                leftNode->data = pre[curr];
+                n->left = leftNode;
+                makeTree(leftNode, pre, curr++, 0);
+                makeTree(n, pre, curr++, 1);
+            }        
+            else if (!pre[curr] && right == 0) {
+                makeTree(n, pre, curr++, 1);
+            }
+            else if (pre[curr] && right == 1) {
+                node<T>* rightNode = new node<T>();
+                rightNode->data = pre[curr];
+                n->right = rightNode;
+                makeTree(rightNode, pre, curr++, 0);
+            }
+        }
+    }
+    
+    void makeNewTree(vector<T> pre) {
+        node<T>* n = new node<T>();
+        n->data = pre[0];
+        root = n;
+        makeTree(root, pre, curr++, 0);
+        curr = 0;
+    }
+    
+    void Print (node<T> * x, int & id)
+    {
+        if (!x) return;
+
+        Print (x->left,id);
+
+        id++;
+        cout << id << ' ' << x->data << endl;
+
+        Print (x->right,id);
+    }
+};
+
+int main() {
+    vector<int> pre = { 10, 5, 2, 0, 0, 8, 6, 0, 0, 0, 13, 0, 14, 0, 18, 16, 0, 0, 0 };
+    BinaryTree<int> B;
+    B.makeNewTree(pre);
+    int id = 0;
+    B.Print(B.root,id);
+    
+	return 0;
+}
