@@ -1,0 +1,129 @@
+#include <iostream>
+#include <vector>
+#include <cmath>
+
+using namespace std;
+
+#include <iostream>
+#include <vector>
+#include <cmath>
+
+using namespace std;
+
+template <typename T>
+class node {
+public:
+	T data;
+	node *left, *right;
+	
+	node() {
+		left = right = NULL;
+	}
+};
+
+template <typename T>
+class Node {
+public: 
+    T data;
+    Node *next;
+    
+    Node() {
+        next = NULL;
+    }
+};
+
+template <typename T>
+class BinaryTree {
+public:
+	node<T> *root;
+    int curr;
+
+	BinaryTree() {
+		root = NULL;
+        curr = 0;
+	}
+
+	void _insert(T a, node<T> *n) {
+		if (root) {
+			if (a < n->data) {
+				if (n->left)
+					_insert(a, n->left);
+				else {
+					node<T> *leaf = new node<T>();
+					leaf->data = a;
+					n->left = leaf;
+				}
+			}
+			else {
+				if (n->right)
+					_insert(a, n->right);
+				else {
+					node<T> *leaf = new node<T>();
+					leaf->data = a;
+					n->right = leaf;
+				}
+			}
+		}
+		else {
+			node<T> *leaf = new node<T>();
+			leaf->data = a;
+			root = leaf;
+		}
+
+	}
+
+	void insert(T a) {
+		_insert(a, root);
+	}
+    
+    node<T>* leastCommonAncestor(node<T>* n, node<T>* a, node<T>* b) {
+        if (n) {
+            if (n == a || n == b) {
+                return n;
+            }
+            node<T>* l = leastCommonAncestor(n->left, a, b);
+            node<T>* r = leastCommonAncestor(n->right, a, b);
+            if (l && r) { 
+                return n;
+            }
+            else if (l) {
+                return l;
+            }
+            else if (r) {
+                return r;
+            }
+        }
+        return NULL;
+    }
+    
+    void Print (node<T> * x, int & id)
+    {
+        if (!x) return;
+
+        Print (x->left,id);
+
+        id++;
+        cout << id << ' ' << x->data << endl;
+
+        Print (x->right,id);
+    }
+};
+
+int main() {
+    
+    BinaryTree<int> B;
+    B.insert(10);
+    B.insert(5);
+    B.insert(13);
+    B.insert(16);
+    B.insert(11);
+    B.insert(7);
+    B.insert(3);
+    B.insert(6);
+    B.insert(8);
+    B.insert(9);
+    cout << "Find LCA of " << B.root->left->right->left->data << " and " << B.root->left->right->right->right->data << endl;
+    node<int>* n = B.leastCommonAncestor(B.root, B.root->left->right->left, B.root->left->right->right->right);
+    cout << n->data << endl;
+	return 0;
+}
